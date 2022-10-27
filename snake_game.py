@@ -119,6 +119,11 @@ class SnakeGameAI:
 
         # 5. update ui and clock
         self._update_ui()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                SPEED = 20
+            else:
+                SPEED = 1000
         self.clock.tick(SPEED)
         # 6. return game over and score
         return reward, game_over, self.score
