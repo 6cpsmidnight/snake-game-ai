@@ -107,6 +107,7 @@ def train():
     plot_mean_scores = []
     total_score = 0
     record = 0
+    recordTies = 0
     agent = Agent()
     game = SnakeGameAI()
     while True:
@@ -132,11 +133,18 @@ def train():
             agent.n_games += 1
             agent.train_long_memory()
 
-            if score > record:
+            if score == record:
+                recordTies += 1
+                agent.model.save()
+            elif score > record:
                 record = score
+                recordTies = 1
                 agent.model.save()
 
-            print('Game', agent.n_games, 'Score', score, 'Record:', record)
+            if recordTies == 1:
+                print("Game", agent.n_games, "Score", score, "Record:", record)
+            elif recordTies > 1:
+                print("Game", agent.n_games, "Score", score, "Record:", str(record) + "(" + str(recordTies) + ")")
 
             plot_scores.append(score)
             total_score += score
@@ -145,5 +153,5 @@ def train():
             plot(plot_scores, plot_mean_scores)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     train()
