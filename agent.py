@@ -1,10 +1,12 @@
-import torch
 import random
-import numpy as np
 from collections import deque
-from snake_game import SnakeGameAI, Direction, Point
-from model import Linear_QNet, QTrainer
+
+import numpy as np
+import torch
+
 from helper import plot
+from model import Linear_QNet, QTrainer
+from snake_game import SnakeGameAI, Direction, Point
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -13,7 +15,7 @@ LR = 0.001
 
 class Agent:
 
-    def __init__(self):
+    def __init__(self, w=640, h=480):
         self.n_games = 0
         self.epsilon = 0  # randomness
         self.gamma = 0.9  # discount rate
@@ -78,7 +80,7 @@ class Agent:
 
         states, actions, rewards, next_states, dones = zip(*mini_sample)
         self.trainer.train_step(states, actions, rewards, next_states, dones)
-        # for state, action, reward, nexrt_state, done in mini_sample:
+        # for state, action, reward, next_state, done in mini_sample:
         #    self.trainer.train_step(state, action, reward, next_state, done)
 
     def train_short_memory(self, state, action, reward, next_state, done):
